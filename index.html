@@ -8,11 +8,11 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;color:#333}
-.hdr{background:#006F53;color:#fff;padding:18px 30px;display:flex;align-items:center;justify-content:space-between}
-.hdr-left{display:flex;align-items:center;gap:18px}
-.hdr-left img{height:64px}
-.hdr h1{font-size:20px;font-weight:600;letter-spacing:.4px}
-.hdr .sub{font-size:12px;opacity:.8}
+.hdr{background:#006F53;color:#fff;padding:22px 30px;display:flex;align-items:center;justify-content:space-between}
+.hdr-left{display:flex;align-items:center;gap:22px}
+.hdr-left img{height:88px}
+.hdr h1{font-size:26px;font-weight:600;letter-spacing:.4px}
+.hdr .sub{font-size:14px;opacity:.85;margin-top:2px}
 .wrap{max-width:1400px;margin:22px auto;padding:0 18px}
 
 .cards{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:24px}
@@ -87,8 +87,12 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 .ytd-item .ytd-val.grn{color:#1a8a3f}.ytd-item .ytd-val.red{color:#c0392b}
 .ytd-item.variance{border-top:1px dashed #c5d8c9;padding-top:10px;margin-top:2px}
 
-.bars-area{flex:1;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
-.month-group{flex:1;min-width:130px}
+.bars-area{flex:1;display:flex;gap:14px;flex-wrap:nowrap;align-items:center;overflow-x:auto;scroll-behavior:smooth;padding-bottom:10px}
+.bars-area::-webkit-scrollbar{height:8px}
+.bars-area::-webkit-scrollbar-track{background:#f0f2f5;border-radius:4px}
+.bars-area::-webkit-scrollbar-thumb{background:#006F53;border-radius:4px}
+.bars-area::-webkit-scrollbar-thumb:hover{background:#005a43}
+.month-group{flex:0 0 calc((100% - 42px)/4);min-width:160px}
 .month-group .mlbl{font-size:13px;color:#888;text-align:center;margin-bottom:8px;font-weight:700;text-transform:uppercase}
 .bar-pair{display:flex;flex-direction:column;gap:6px}
 .bar-wrap{display:flex;align-items:center;gap:6px}
