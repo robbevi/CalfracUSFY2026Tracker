@@ -8,9 +8,9 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;color:#333}
-.hdr{background:#006F53;color:#fff;padding:14px 30px;display:flex;align-items:center;justify-content:space-between}
-.hdr-left{display:flex;align-items:center;gap:16px}
-.hdr-left img{height:44px}
+.hdr{background:#006F53;color:#fff;padding:18px 30px;display:flex;align-items:center;justify-content:space-between}
+.hdr-left{display:flex;align-items:center;gap:18px}
+.hdr-left img{height:64px}
 .hdr h1{font-size:20px;font-weight:600;letter-spacing:.4px}
 .hdr .sub{font-size:12px;opacity:.8}
 .wrap{max-width:1400px;margin:22px auto;padding:0 18px}
@@ -95,9 +95,15 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 .bar-tag{font-size:9.5px;font-weight:800;letter-spacing:.6px;min-width:44px;text-align:right;text-transform:uppercase}
 .bar-tag.budget{color:#5a6c7d}
 .bar-tag.actual{color:#1B5E20}
-.bar{height:32px;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:12px;font-weight:600;color:#fff;white-space:nowrap;min-width:3px;transition:width .4s}
+
+/* === ZERO-CENTERED BAR TRACK === */
+.bar-track{position:relative;flex:1;height:32px;background:#f5f7f9;border-radius:4px;overflow:visible}
+.bar-axis{position:absolute;left:50%;top:-2px;bottom:-2px;width:2px;background:#90a4ae;z-index:2;transform:translateX(-50%)}
+.bar{position:absolute;top:0;bottom:0;border-radius:3px;display:flex;align-items:center;padding:0 8px;font-size:12px;font-weight:600;color:#fff;white-space:nowrap;min-width:3px;transition:width .4s;z-index:1}
+.bar-pos{left:50%}
+.bar-neg{right:50%;justify-content:flex-end}
 .bar-bgt{background:#b0bec5}.bar-good{background:#27ae60}.bar-bad{background:#e74c3c}
-.bar-val{font-size:13px;color:#555;white-space:nowrap;font-weight:600}
+.bar-val{font-size:13px;color:#555;white-space:nowrap;font-weight:600;min-width:90px;text-align:left}
 
 .var-pill{text-align:center;margin-top:8px;width:100%;display:block}
 .var-pill span{display:inline-block;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;letter-spacing:.2px}
@@ -355,7 +361,6 @@ function renderDashboard(){
     <div class="card"><div class="lbl">FY-2026 Calendar</div><div class="val">${daysRemaining} Days Left</div><div class="sm">${pctThrough}% through FY 2026</div></div>
   </div>`;
 
-  // PACE TRACKER
   const fyBudget=D.fyBudgetOI||1;
   const actualPct=(ytdA/fyBudget)*100;
   const expectedPct=(n/12)*100;
@@ -389,36 +394,12 @@ function renderDashboard(){
         <div class="pace-ticks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
       </div>
       <div class="pace-metrics">
-        <div class="pace-metric">
-          <div class="pm-lbl">Months Remaining</div>
-          <div class="pm-val">${monthsRemaining}</div>
-          <div class="pm-sm">of 12 total</div>
-        </div>
-        <div class="pace-metric">
-          <div class="pm-lbl">Remaining OI to Earn</div>
-          <div class="pm-val">${fmt(remainingBudget)}</div>
-          <div class="pm-sm">to hit FY budget</div>
-        </div>
-        <div class="pace-metric">
-          <div class="pm-lbl">Avg Monthly OI Required</div>
-          <div class="pm-val ${avgMonthlyRequired>ytdAvgMonthly?'red':'grn'}">${fmt(avgMonthlyRequired)}</div>
-          <div class="pm-sm">over next ${monthsRemaining} months</div>
-        </div>
-        <div class="pace-metric">
-          <div class="pm-lbl">Acceleration Needed</div>
-          <div class="pm-val ${accelerationPct>0?'red':'grn'}">${accelerationPct>=0?'+':''}${accelerationPct.toFixed(1)}%</div>
-          <div class="pm-sm">vs YTD avg of ${fmt(ytdAvgMonthly)}</div>
-        </div>
-        <div class="pace-metric">
-          <div class="pm-lbl">Catch-Up Amount</div>
-          <div class="pm-val ${catchUpAmount>0?'red':'grn'}">${catchUpAmount>=0?fmt(catchUpAmount):'\u2014'}</div>
-          <div class="pm-sm">${catchUpAmount>0?'gap to expected pace':'ahead of pace'}</div>
-        </div>
-        <div class="pace-metric">
-          <div class="pm-lbl">Run-Rate Forecast</div>
-          <div class="pm-val ${forecastVsBudget>=0?'grn':'red'}">${fmt(runRateForecast)}</div>
-          <div class="pm-sm">${forecastVsBudget>=0?'+':''}${fmt(forecastVsBudget)} vs budget</div>
-        </div>
+        <div class="pace-metric"><div class="pm-lbl">Months Remaining</div><div class="pm-val">${monthsRemaining}</div><div class="pm-sm">of 12 total</div></div>
+        <div class="pace-metric"><div class="pm-lbl">Remaining OI to Earn</div><div class="pm-val">${fmt(remainingBudget)}</div><div class="pm-sm">to hit FY budget</div></div>
+        <div class="pace-metric"><div class="pm-lbl">Avg Monthly OI Required</div><div class="pm-val ${avgMonthlyRequired>ytdAvgMonthly?'red':'grn'}">${fmt(avgMonthlyRequired)}</div><div class="pm-sm">over next ${monthsRemaining} months</div></div>
+        <div class="pace-metric"><div class="pm-lbl">Acceleration Needed</div><div class="pm-val ${accelerationPct>0?'red':'grn'}">${accelerationPct>=0?'+':''}${accelerationPct.toFixed(1)}%</div><div class="pm-sm">vs YTD avg of ${fmt(ytdAvgMonthly)}</div></div>
+        <div class="pace-metric"><div class="pm-lbl">Catch-Up Amount</div><div class="pm-val ${catchUpAmount>0?'red':'grn'}">${catchUpAmount>=0?fmt(catchUpAmount):'\u2014'}</div><div class="pm-sm">${catchUpAmount>0?'gap to expected pace':'ahead of pace'}</div></div>
+        <div class="pace-metric"><div class="pm-lbl">Run-Rate Forecast</div><div class="pm-val ${forecastVsBudget>=0?'grn':'red'}">${fmt(runRateForecast)}</div><div class="pm-sm">${forecastVsBudget>=0?'+':''}${fmt(forecastVsBudget)} vs budget</div></div>
       </div>
     </div>
   </div>`;
@@ -467,7 +448,7 @@ function renderDashboard(){
   H+=`</tbody></table></div>`;
 
   H+=`<div class="viz-section-hd">Budget vs Actual: Monthly Gross Margin by District
-    <div class="legend"><span><span class="dot" style="background:#b0bec5"></span>Budget</span><span><span class="dot" style="background:#27ae60"></span>Actual \u2265 Budget</span><span><span class="dot" style="background:#e74c3c"></span>Actual &lt; Budget</span></div>
+    <div class="legend"><span><span class="dot" style="background:#b0bec5"></span>Budget</span><span><span class="dot" style="background:#27ae60"></span>Actual \u2265 Budget</span><span><span class="dot" style="background:#e74c3c"></span>Actual &lt; Budget</span><span style="color:#90a4ae;font-weight:700">| Zero Axis</span></div>
   </div>`;
 
   opDist.forEach(d=>{
@@ -483,6 +464,7 @@ function renderDashboard(){
     const mVar=mAct-mBgt;
     const mAhead=mAct>=mBgt;
 
+    // Scale based on max absolute value across all months for proper zero-centered axis
     let allV=[];for(let i=0;i<n;i++){allV.push(Math.abs(d.bgtGM[i]||0),Math.abs((d.actGM||[])[i]||0));}
     const mx=Math.max(...allV,1);
 
@@ -511,12 +493,15 @@ function renderDashboard(){
     for(let i=0;i<n;i++){
       const bv=d.bgtGM[i]||0,av=(d.actGM||[])[i]||0;
       const mv=av-bv;
-      const bw=Math.max(Math.abs(bv)/mx*100,1),aw=Math.max(Math.abs(av)/mx*100,1);
+      // Width is half-track scaling — axis at center, bars extend left or right
+      const bw=Math.max(Math.abs(bv)/mx*50,1),aw=Math.max(Math.abs(av)/mx*50,1);
+      const bPosCls=bv>=0?"bar-pos":"bar-neg";
+      const aPosCls=av>=0?"bar-pos":"bar-neg";
       const varCls=mv>0?"var-pos":mv<0?"var-neg":"var-zero";
       const showTag=(i===0);
       H+=`<div class="month-group"><div class="mlbl">${D.months[i]}</div><div class="bar-pair">
-        <div class="bar-wrap">${showTag?'<span class="bar-tag budget">Budget</span>':''}<div class="bar bar-bgt" style="width:${bw}%"></div><span class="bar-val">${fmt(bv)}</span></div>
-        <div class="bar-wrap">${showTag?'<span class="bar-tag actual">Actual</span>':''}<div class="bar ${av>=bv?'bar-good':'bar-bad'}" style="width:${aw}%"></div><span class="bar-val">${fmt(av)}</span></div>
+        <div class="bar-wrap">${showTag?'<span class="bar-tag budget">Budget</span>':''}<div class="bar-track"><div class="bar-axis"></div><div class="bar bar-bgt ${bPosCls}" style="width:${bw}%"></div></div><span class="bar-val">${fmt(bv)}</span></div>
+        <div class="bar-wrap">${showTag?'<span class="bar-tag actual">Actual</span>':''}<div class="bar-track"><div class="bar-axis"></div><div class="bar ${av>=bv?'bar-good':'bar-bad'} ${aPosCls}" style="width:${aw}%"></div></div><span class="bar-val">${fmt(av)}</span></div>
       </div><div class="var-pill"><span class="${varCls}">${fmtVar(mv)}</span></div></div>`;
     }
     H+=`</div></div></div>`;
