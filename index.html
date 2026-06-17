@@ -15,21 +15,49 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 .hdr .sub{font-size:12px;opacity:.8}
 .wrap{max-width:1400px;margin:22px auto;padding:0 18px}
 
-.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:13px;margin-bottom:24px}
-.card{background:#fff;border-radius:10px;padding:16px 18px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-top:4px solid #006F53;transition:transform .12s;text-align:center}
+.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:24px}
+.card{background:#fff;border-radius:10px;padding:22px 22px;box-shadow:0 2px 8px rgba(0,0,0,.07);border-top:4px solid #006F53;transition:transform .12s;text-align:center;display:flex;flex-direction:column;justify-content:space-between;gap:8px}
 .card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.12)}
-.card .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:#888;font-weight:600}
-.card .val{font-size:22px;font-weight:700;margin-top:5px;color:#006F53}
-.card .sm{font-size:10.5px;margin-top:4px;color:#999}
+.card .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#888;font-weight:600;min-height:2.8em;display:flex;align-items:center;justify-content:center;line-height:1.3}
+.card .val{font-size:26px;font-weight:700;color:#006F53;line-height:1.1}
+.card .sm{font-size:11.5px;margin-top:5px;color:#999;min-height:2.6em;display:flex;align-items:center;justify-content:center;line-height:1.3}
 .grn{color:#1a8a3f!important}.red{color:#c0392b!important}
 
+.pace-section{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;margin-bottom:28px}
+.pace-hd{background:#006F53;color:#fff;padding:14px 20px;font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;letter-spacing:.3px}
+.pace-hd .pace-status{font-size:14px;padding:8px 22px;border-radius:22px;font-weight:900;letter-spacing:1px;text-transform:uppercase;box-shadow:0 2px 5px rgba(0,0,0,.12);border:2px solid}
+.pace-hd .pace-status.ahead{background:linear-gradient(135deg,#e6f7ed 0%,#c9eed7 100%);color:#0f6b2e;border-color:#1a8a3f;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.pace-hd .pace-status.behind{background:linear-gradient(135deg,#fce4e4 0%,#f8c2c2 100%);color:#a02818;border-color:#c0392b;text-shadow:0 1px 0 rgba(255,255,255,.6);animation:pulse 1.3s infinite}
+.pace-body{padding:24px 28px}
+.pace-bar-wrap{position:relative;margin:18px 0 30px 0}
+.pace-target{display:flex;justify-content:flex-end;font-size:11px;color:#888;font-weight:600;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px}
+.pace-target strong{color:#006F53;margin-left:6px;font-weight:800}
+.pace-bar-bg{background:#e8e8e8;border-radius:18px;height:36px;width:100%;overflow:hidden;position:relative}
+.pace-bar-fill{height:100%;border-radius:18px;display:flex;align-items:center;padding-left:14px;font-size:13px;font-weight:800;color:#fff;transition:width .6s ease-out;letter-spacing:.4px}
+.pace-bar-fill.on-pace{background:linear-gradient(90deg,#27ae60 0%,#1a8a3f 100%)}
+.pace-bar-fill.off-pace{background:linear-gradient(90deg,#e74c3c 0%,#c0392b 100%)}
+.pace-marker{position:absolute;top:-8px;bottom:-8px;width:3px;background:#1B3A5C;border-radius:2px}
+.pace-marker::before{content:attr(data-label);position:absolute;top:-22px;left:50%;transform:translateX(-50%);background:#1B3A5C;color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;white-space:nowrap;letter-spacing:.3px}
+.pace-marker::after{content:"";position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #1B3A5C}
+.pace-ticks{display:flex;justify-content:space-between;font-size:10.5px;color:#888;font-weight:700;margin-top:10px;position:relative;padding:0 2px}
+.pace-ticks span{position:relative;flex:0 0 auto}
+.pace-ticks span::before{content:"";position:absolute;top:-8px;left:50%;width:1px;height:6px;background:#bbb;transform:translateX(-50%)}
+.pace-metrics{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:24px;padding-top:20px;border-top:1px dashed #d6e6da}
+.pace-metric{text-align:center;padding:12px 8px;background:#f8faf8;border-radius:8px;border:1px solid #e8f0ea}
+.pace-metric .pm-lbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:#888;font-weight:700;margin-bottom:6px;min-height:2.4em;display:flex;align-items:center;justify-content:center;line-height:1.3}
+.pace-metric .pm-val{font-size:22px;font-weight:800;color:#006F53;line-height:1.2}
+.pace-metric .pm-val.grn{color:#1a8a3f}.pace-metric .pm-val.red{color:#c0392b}
+.pace-metric .pm-sm{font-size:11px;color:#999;margin-top:4px}
+@media(max-width:1000px){.pace-metrics{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:600px){.pace-metrics{grid-template-columns:repeat(2,1fr)}}
+
 .snapshot{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;margin-bottom:28px}
-.snapshot-hd{background:#006F53;color:#fff;padding:12px 20px;font-size:15px;font-weight:600}
+.snapshot-hd{background:#006F53;color:#fff;padding:14px 20px;font-size:16px;font-weight:700;letter-spacing:.3px}
 .snapshot table{width:100%;border-collapse:collapse}
-.snapshot thead th{padding:8px 10px;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;text-align:right;border-bottom:1px solid #ddd;background:#fafafa;color:#555}
-.snapshot thead th:first-child{text-align:left}
+.snapshot thead th{padding:8px 10px;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;text-align:center;border-bottom:1px solid #ddd;background:#fafafa;color:#555}
+.snapshot thead th:first-child{text-align:center}
 .snapshot .col-group{background:#f0f2f5;color:#006F53;font-weight:700;font-size:14px;text-align:center;padding:12px 8px;border-bottom:2px solid #006F53;letter-spacing:.4px;text-transform:uppercase}
-.snapshot tbody td{padding:11px 10px;font-size:12.5px;text-align:right;border-bottom:1px solid #f0f0f0;color:#444}
+.snapshot tbody td{padding:11px 10px;font-size:12.5px;text-align:center;border-bottom:1px solid #f0f0f0;color:#444}
 .snapshot tbody td:first-child{text-align:left;font-weight:600;color:#006F53;font-size:13px}
 .snapshot tbody tr:hover{background:#f7f9fc}
 .snapshot tbody tr.total td{font-weight:700;background:#f4f6fa;color:#006F53;border-top:2px solid #006F53}
@@ -45,17 +73,19 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 .dist-card{background:#fff;border-radius:12px;box-shadow:0 3px 12px rgba(0,0,0,.08);margin-bottom:20px;overflow:hidden;border:1px solid #e0e4ea}
 .dist-card-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 24px;background:#f8faf8;border-bottom:1px solid #e0e4ea}
 .dist-card-hdr .dist-name{font-size:20px;font-weight:700;color:#006F53;letter-spacing:.3px}
-.badge{display:inline-block;padding:10px 28px;border-radius:25px;font-size:17px;font-weight:900;letter-spacing:1.2px;text-transform:uppercase;box-shadow:0 2px 6px rgba(0,0,0,.12)}
-.badge-ok{background:linear-gradient(135deg,#e6f7ed 0%,#c9eed7 100%);color:#0f6b2e;border:3px solid #1a8a3f;text-shadow:0 1px 0 rgba(255,255,255,.6)}
-.badge-warn{background:linear-gradient(135deg,#fce4e4 0%,#f8c2c2 100%);color:#a02818;border:3px solid #c0392b;text-shadow:0 1px 0 rgba(255,255,255,.6);animation:pulse 1.3s infinite}
+.badge{display:inline-block;padding:8px 22px;border-radius:22px;font-size:14px;font-weight:900;letter-spacing:1px;text-transform:uppercase;box-shadow:0 2px 5px rgba(0,0,0,.12)}
+.badge-ok{background:linear-gradient(135deg,#e6f7ed 0%,#c9eed7 100%);color:#0f6b2e;border:2px solid #1a8a3f;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.badge-warn{background:linear-gradient(135deg,#fce4e4 0%,#f8c2c2 100%);color:#a02818;border:2px solid #c0392b;text-shadow:0 1px 0 rgba(255,255,255,.6);animation:pulse 1.3s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.7;transform:scale(1.04)}}
 
 .dist-card-body{display:flex;padding:28px 24px;gap:28px;align-items:stretch;min-height:200px}
-.ytd-box{min-width:220px;max-width:240px;background:#f4f8f5;border-radius:10px;padding:20px;border:1px solid #d6e6da;display:flex;flex-direction:column;justify-content:center;gap:14px}
+.ytd-box{min-width:360px;max-width:400px;background:#f4f8f5;border-radius:10px;padding:18px 20px;border:1px solid #d6e6da;display:flex;flex-direction:row;gap:18px}
+.ytd-col{flex:1;display:flex;flex-direction:column;gap:12px;justify-content:center}
+.ytd-col-hd{font-size:11px;font-weight:800;color:#006F53;text-transform:uppercase;letter-spacing:.7px;text-align:center;padding-bottom:6px;border-bottom:2px solid #d6e6da;margin-bottom:2px}
 .ytd-item .ytd-label{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:#888;font-weight:600}
-.ytd-item .ytd-val{font-size:22px;font-weight:700;color:#333;margin-top:2px}
+.ytd-item .ytd-val{font-size:18px;font-weight:700;color:#333;margin-top:2px}
 .ytd-item .ytd-val.grn{color:#1a8a3f}.ytd-item .ytd-val.red{color:#c0392b}
-.ytd-item.variance{border-top:2px solid #d6e6da;padding-top:12px}
+.ytd-item.variance{border-top:1px dashed #c5d8c9;padding-top:10px;margin-top:2px}
 
 .bars-area{flex:1;display:flex;gap:14px;flex-wrap:wrap;align-items:center}
 .month-group{flex:1;min-width:130px}
@@ -69,8 +99,8 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 .bar-bgt{background:#b0bec5}.bar-good{background:#27ae60}.bar-bad{background:#e74c3c}
 .bar-val{font-size:13px;color:#555;white-space:nowrap;font-weight:600}
 
-.var-pill{text-align:center;margin-top:6px}
-.var-pill span{display:inline-block;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:700;letter-spacing:.2px}
+.var-pill{text-align:center;margin-top:8px;width:100%;display:block}
+.var-pill span{display:inline-block;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;letter-spacing:.2px}
 .var-pill .var-pos{background:#e6f7ed;color:#1a8a3f}
 .var-pill .var-neg{background:#fce4e4;color:#c0392b}
 .var-pill .var-zero{background:#f0f0f0;color:#888}
@@ -111,7 +141,7 @@ table.pnl tbody tr:hover{background:#f7f9fc}
 .status.ok{color:#27ae60}.status.err{color:#c0392b}
 
 @media(max-width:1100px){.cards{grid-template-columns:repeat(3,1fr)}}
-@media(max-width:1000px){.dist-card-body{flex-direction:column}}
+@media(max-width:1000px){.dist-card-body{flex-direction:column}.ytd-box{max-width:100%}}
 @media(max-width:600px){.cards{grid-template-columns:repeat(2,1fr)}}
 
 </style>
@@ -325,6 +355,74 @@ function renderDashboard(){
     <div class="card"><div class="lbl">FY-2026 Calendar</div><div class="val">${daysRemaining} Days Left</div><div class="sm">${pctThrough}% through FY 2026</div></div>
   </div>`;
 
+  // PACE TRACKER
+  const fyBudget=D.fyBudgetOI||1;
+  const actualPct=(ytdA/fyBudget)*100;
+  const expectedPct=(n/12)*100;
+  const onPace=actualPct>=expectedPct;
+  const remainingBudget=fyBudget-ytdA;
+  const monthsRemaining=12-n;
+  const avgMonthlyRequired=monthsRemaining>0?remainingBudget/monthsRemaining:0;
+  const ytdAvgMonthly=ytdA/n;
+  const catchUpAmount=(expectedPct-actualPct)/100*fyBudget;
+  const runRateForecast=ytdAvgMonthly*12;
+  const accelerationPct=ytdAvgMonthly!==0?((avgMonthlyRequired-ytdAvgMonthly)/Math.abs(ytdAvgMonthly))*100:0;
+  const forecastVsBudget=runRateForecast-fyBudget;
+
+  const fillPct=Math.min(Math.max(actualPct,0),100);
+  const markerPct=Math.min(Math.max(expectedPct,0),100);
+
+  H+=`<div class="pace-section">
+    <div class="pace-hd">
+      <span>FY-2026 Pace Tracker \u2014 US Operating Income</span>
+      <span class="pace-status ${onPace?'ahead':'behind'}">${onPace?'\u2705 On Pace!':'\u26a0\ufe0f Behind Pace!'}</span>
+    </div>
+    <div class="pace-body">
+      <div class="pace-bar-wrap">
+        <div class="pace-target">FY Target: <strong>${fmt(fyBudget)}</strong></div>
+        <div class="pace-bar-bg">
+          <div class="pace-bar-fill ${onPace?'on-pace':'off-pace'}" style="width:${fillPct}%">
+            ${actualPct.toFixed(1)}% of FY Budget Achieved
+          </div>
+          <div class="pace-marker" style="left:${markerPct}%" data-label="Expected: ${expectedPct.toFixed(1)}%"></div>
+        </div>
+        <div class="pace-ticks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
+      </div>
+      <div class="pace-metrics">
+        <div class="pace-metric">
+          <div class="pm-lbl">Months Remaining</div>
+          <div class="pm-val">${monthsRemaining}</div>
+          <div class="pm-sm">of 12 total</div>
+        </div>
+        <div class="pace-metric">
+          <div class="pm-lbl">Remaining OI to Earn</div>
+          <div class="pm-val">${fmt(remainingBudget)}</div>
+          <div class="pm-sm">to hit FY budget</div>
+        </div>
+        <div class="pace-metric">
+          <div class="pm-lbl">Avg Monthly OI Required</div>
+          <div class="pm-val ${avgMonthlyRequired>ytdAvgMonthly?'red':'grn'}">${fmt(avgMonthlyRequired)}</div>
+          <div class="pm-sm">over next ${monthsRemaining} months</div>
+        </div>
+        <div class="pace-metric">
+          <div class="pm-lbl">Acceleration Needed</div>
+          <div class="pm-val ${accelerationPct>0?'red':'grn'}">${accelerationPct>=0?'+':''}${accelerationPct.toFixed(1)}%</div>
+          <div class="pm-sm">vs YTD avg of ${fmt(ytdAvgMonthly)}</div>
+        </div>
+        <div class="pace-metric">
+          <div class="pm-lbl">Catch-Up Amount</div>
+          <div class="pm-val ${catchUpAmount>0?'red':'grn'}">${catchUpAmount>=0?fmt(catchUpAmount):'\u2014'}</div>
+          <div class="pm-sm">${catchUpAmount>0?'gap to expected pace':'ahead of pace'}</div>
+        </div>
+        <div class="pace-metric">
+          <div class="pm-lbl">Run-Rate Forecast</div>
+          <div class="pm-val ${forecastVsBudget>=0?'grn':'red'}">${fmt(runRateForecast)}</div>
+          <div class="pm-sm">${forecastVsBudget>=0?'+':''}${fmt(forecastVsBudget)} vs budget</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+
   const aRev=D.actLines["Revenue"]||[],aGM=D.actLines["Gross Margin"]||[];
   const bRev=D.bgtLines["Revenue"]||[],bGM=D.bgtLines["Gross Margin"]||[];
   const opDist=D.districts.filter(d=>d.bgtGM!=null);
@@ -332,7 +430,7 @@ function renderDashboard(){
   H+=`<div class="snapshot"><div class="snapshot-hd">District Performance Snapshot</div><table>
     <thead>
       <tr>
-        <th rowspan="2" style="text-align:left;vertical-align:bottom;border-right:2px solid #ddd">District</th>
+        <th rowspan="2" style="vertical-align:middle;border-right:2px solid #ddd;font-weight:600;font-size:13px;color:#006F53">District</th>
         <td colspan="2" class="col-group" style="border-right:2px solid #ddd">${curMonth} 2026 \u2014 Actuals</td>
         <td colspan="2" class="col-group" style="border-right:2px solid #ddd">${curMonth} 2026 \u2014 Budget</td>
         <td colspan="3" class="col-group">FY-2026 Gross Margin Progress</td>
@@ -380,6 +478,11 @@ function renderDashboard(){
     const badgeCls=ahead?"badge-ok":"badge-warn";
     const badgeTxt=ahead?"\u2705 On Track!":"\u26a0\ufe0f Behind!";
 
+    const mBgt=d.bgtGM[ci]||0;
+    const mAct=(d.actGM||[])[ci]||0;
+    const mVar=mAct-mBgt;
+    const mAhead=mAct>=mBgt;
+
     let allV=[];for(let i=0;i<n;i++){allV.push(Math.abs(d.bgtGM[i]||0),Math.abs((d.actGM||[])[i]||0));}
     const mx=Math.max(...allV,1);
 
@@ -390,9 +493,18 @@ function renderDashboard(){
       </div>
       <div class="dist-card-body">
         <div class="ytd-box">
-          <div class="ytd-item"><div class="ytd-label">YTD Budget</div><div class="ytd-val">${fmt(ytdBG)}</div></div>
-          <div class="ytd-item"><div class="ytd-label">YTD Actual</div><div class="ytd-val ${ahead?'grn':'red'}">${fmt(ytdAG)}</div></div>
-          <div class="ytd-item variance"><div class="ytd-label">Variance</div><div class="ytd-val ${ytdVar>=0?'grn':'red'}">${fmtVar(ytdVar)}</div></div>
+          <div class="ytd-col">
+            <div class="ytd-col-hd">${curMonth} 2026</div>
+            <div class="ytd-item"><div class="ytd-label">Month Budget</div><div class="ytd-val">${fmt(mBgt)}</div></div>
+            <div class="ytd-item"><div class="ytd-label">Month Actual</div><div class="ytd-val ${mAhead?'grn':'red'}">${fmt(mAct)}</div></div>
+            <div class="ytd-item variance"><div class="ytd-label">Variance</div><div class="ytd-val ${mVar>=0?'grn':'red'}">${fmtVar(mVar)}</div></div>
+          </div>
+          <div class="ytd-col">
+            <div class="ytd-col-hd">Year-to-Date</div>
+            <div class="ytd-item"><div class="ytd-label">YTD Budget</div><div class="ytd-val">${fmt(ytdBG)}</div></div>
+            <div class="ytd-item"><div class="ytd-label">YTD Actual</div><div class="ytd-val ${ahead?'grn':'red'}">${fmt(ytdAG)}</div></div>
+            <div class="ytd-item variance"><div class="ytd-label">Variance</div><div class="ytd-val ${ytdVar>=0?'grn':'red'}">${fmtVar(ytdVar)}</div></div>
+          </div>
         </div>
         <div class="bars-area">`;
 
