@@ -36,6 +36,13 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 .perf-variance .pv-val{font-size:18px;font-weight:800}
 .perf-variance .pv-val.grn{color:#1a8a3f}.perf-variance .pv-val.red{color:#c0392b}
 .perf-variance .pv-pct{font-size:13px;font-weight:700;margin-left:8px;opacity:.85}
+.perf-controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.perf-toggle{display:inline-flex;background:rgba(255,255,255,.18);border-radius:8px;padding:3px;gap:2px}
+.perf-btn{background:transparent;border:none;color:#fff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .15s;letter-spacing:.4px;text-transform:uppercase;font-family:inherit}
+.perf-btn:hover{background:rgba(255,255,255,.15)}
+.perf-btn.active{background:#fff;color:#006F53}
+#perfSection.view-month .perf-ytd-only{display:none}
+#perfSection.view-ytd .perf-month-only{display:none}
 @media(max-width:1100px){.perf-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:700px){.perf-grid{grid-template-columns:1fr}}
 .pace-section{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;margin-bottom:28px}
@@ -71,8 +78,8 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 .snapshot table{width:100%;border-collapse:collapse}
 .snapshot thead th{padding:8px 10px;font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;text-align:center;border-bottom:1px solid #ddd;background:#fafafa;color:#555}
 .snapshot thead th:first-child{text-align:center}
-.snapshot .col-group{background:#f0f2f5;color:#006F53;font-weight:700;font-size:14px;text-align:center;padding:12px 8px;border-bottom:2px solid #006F53;letter-spacing:.4px;text-transform:uppercase}
-.snapshot tbody td{padding:11px 10px;font-size:12.5px;text-align:center;border-bottom:1px solid #f0f0f0;color:#444}
+.snapshot .col-group{background:#f0f2f5;color:#006F53;font-weight:700;font-size:12.5px;text-align:center;padding:11px 6px;border-bottom:2px solid #006F53;letter-spacing:.3px;text-transform:uppercase}
+.snapshot tbody td{padding:10px 8px;font-size:12px;text-align:center;border-bottom:1px solid #f0f0f0;color:#444}
 .snapshot tbody td:first-child{text-align:left;font-weight:600;color:#006F53;font-size:13px}
 .snapshot tbody tr:hover{background:#f7f9fc}
 .snapshot tbody tr.total td{font-weight:700;background:#f4f6fa;color:#006F53;border-top:2px solid #006F53}
@@ -169,6 +176,91 @@ table.pnl tbody tr:hover{background:#f7f9fc}
 @media(max-width:1000px){.dist-card-body{flex-direction:column}.ytd-box{max-width:100%}}
 @media(max-width:600px){.cards{grid-template-columns:repeat(2,1fr)}}
 
+
+/* === Snapshot Toggle === */
+.snap-toggle{display:inline-flex;background:rgba(255,255,255,.18);border-radius:8px;padding:3px;gap:2px;flex-wrap:wrap}
+.snap-btn{background:transparent;border:none;color:#fff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:6px;cursor:pointer;transition:all .15s;letter-spacing:.4px;text-transform:uppercase;font-family:inherit}
+.snap-btn:hover{background:rgba(255,255,255,.15)}
+.snap-btn.active{background:#fff;color:#006F53}
+.snap-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.snap-scroll::-webkit-scrollbar{height:6px}
+.snap-scroll::-webkit-scrollbar-track{background:#f5f7f9;border-radius:3px}
+.snap-scroll::-webkit-scrollbar-thumb{background:#c0d6cd;border-radius:3px}
+
+/* Toggle column visibility */
+.snapshot.view-rev .col-gm,.snapshot.view-rev .col-oi,.snapshot.view-rev .col-ocf{display:none}
+.snapshot.view-gm .col-rev,.snapshot.view-gm .col-oi,.snapshot.view-gm .col-ocf{display:none}
+.snapshot.view-oi .col-rev,.snapshot.view-oi .col-gm,.snapshot.view-oi .col-ocf{display:none}
+.snapshot.view-ocf .col-rev,.snapshot.view-ocf .col-gm,.snapshot.view-ocf .col-oi{display:none}
+
+/* === MOBILE OPTIMIZATION === */
+@media(max-width:1100px){
+  .cards{grid-template-columns:repeat(3,1fr);gap:12px}
+  .card .val{font-size:22px}
+  .perf-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  .wrap{padding:0 14px;margin:14px auto}
+  .hdr{padding:12px 20px 12px 24px}
+  .hdr-left{gap:14px}
+  .hdr-left img{height:56px}
+  .hdr h1{font-size:20px}
+  .hdr .sub{font-size:12px}
+  .dist-card-body{flex-direction:column;padding:18px 16px;gap:18px;min-height:0}
+  .ytd-box{min-width:0;max-width:100%;width:100%;padding:14px 16px}
+  .bars-area{width:100%}
+  .month-group{flex:0 0 calc((100% - 14px)/2);min-width:140px}
+  .badge{padding:6px 14px;font-size:12px;letter-spacing:.6px}
+  .dist-card-hdr{padding:12px 16px}
+  .dist-card-hdr .dist-name{font-size:17px}
+  .viz-section-hd{font-size:15px;flex-direction:column;align-items:flex-start;gap:8px}
+  .legend{font-size:10px;gap:10px;flex-wrap:wrap}
+  .pace-hd{padding:12px 16px;font-size:14px;flex-direction:column;align-items:flex-start;gap:10px}
+  .pace-hd .pace-status{font-size:12px;padding:6px 14px}
+  .perf-controls{flex-direction:column;align-items:flex-start;gap:8px;width:100%}
+  .pace-body{padding:14px 16px}
+  .snapshot-hd{padding:12px 16px;font-size:14px;flex-direction:column !important;align-items:flex-start !important}
+  .snap-toggle{align-self:flex-start}
+  .snapshot table{font-size:11.5px}
+  .snapshot thead th,.snapshot tbody td{padding:7px 8px}
+  .snapshot .col-group{font-size:11px;padding:8px 6px}
+  table.pnl thead th{padding:10px 10px;font-size:12px}
+  table.pnl tbody td{padding:7px 10px;font-size:11.5px}
+  .tbl-hdr{padding:12px 16px;flex-direction:column;align-items:flex-start;gap:8px}
+  .upload-toggle{padding:12px 16px}
+  .upload-body{padding:14px;grid-template-columns:1fr}
+  .progress-bar-bg{height:20px;min-width:80px}
+  .progress-bar-fill{font-size:10px}
+}
+@media(max-width:700px){
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .perf-grid{grid-template-columns:1fr;padding:14px 16px;gap:12px}
+  .perf-card{padding:14px 16px}
+  .perf-row .pr-val{font-size:18px}
+  .hdr{padding:10px 16px}
+  .hdr-left img{height:44px}
+  .hdr h1{font-size:17px;letter-spacing:.2px}
+  .hdr .sub{font-size:11px}
+  #lastUpdated{display:none}
+  .month-group{flex:0 0 calc(100% - 0px);min-width:0}
+  .bar-track{height:28px}
+  .bar{height:28px;font-size:11px}
+  .bar-val{font-size:12px;min-width:80px}
+  .ytd-col{gap:8px}
+  .ytd-item .ytd-val{font-size:16px}
+  .badge{font-size:11px;padding:5px 12px}
+  .dist-card-hdr{flex-direction:column;align-items:flex-start;gap:8px}
+}
+@media(max-width:480px){
+  .cards{grid-template-columns:1fr}
+  .ytd-box{flex-direction:column;gap:10px}
+  .ytd-col-hd{padding-bottom:4px}
+  .pace-hd{font-size:13px}
+  .viz-section-hd{font-size:14px}
+  .snapshot-hd{font-size:13px}
+  .snap-btn{font-size:11px;padding:5px 10px}
+  .perf-btn{font-size:11px;padding:5px 10px}
+}
 </style>
 </head>
 <body>
@@ -394,7 +486,6 @@ function renderDashboard(){
   const ytdOCFBudget=sum((D.bgtLines["Total OCF"]||[]).slice(0,n));
   const ytdOCFVar=ytdOCFActual-ytdOCFBudget;
   const ytdOCFPct=ytdOCFBudget!==0?(ytdOCFVar/Math.abs(ytdOCFBudget))*100:0;
-  // YTD OI variance (for subtitle on YTD OI card)
   const ytdOIVar=ytdA-ytdB;
 
   let H="";
@@ -407,7 +498,8 @@ function renderDashboard(){
     <div class="card"><div class="lbl">FY-2026 Calendar</div><div class="val">${daysRemaining} Days Left</div><div class="sm">${pctThrough}% through FY 2026</div></div>
   </div>`;
 
-  // CURRENT MONTH PERFORMANCE
+  // CALFRAC US DIVISION FINANCIAL PERFORMANCE
+  // Current Month values
   const curOIBudget=bOI[ci]||0;
   const curOIActual=aOI[ci]||0;
   const curOIVar=curOIActual-curOIBudget;
@@ -427,51 +519,124 @@ function renderDashboard(){
   const curOCFVar=curOCFActual-curOCFBudget;
   const curOCFPct=curOCFBudget!==0?(curOCFVar/Math.abs(curOCFBudget))*100:0;
 
-  const oiAhead=curOIActual>=curOIBudget;
-  const revAhead=curRevActual>=curRevBudget;
-  const ocfAhead=curOCFActual>=curOCFBudget;
-  const overallOnPace=oiAhead&&revAhead&&ocfAhead;
+  // YTD values
+  const ytdOIBudget=sum(bOI.slice(0,n));
+  const ytdOIActual=sum(aOI.slice(0,n));
+  const ytdOIVarP=ytdOIActual-ytdOIBudget;
+  const ytdOIPctP=ytdOIBudget!==0?(ytdOIVarP/Math.abs(ytdOIBudget))*100:0;
 
-  H+=`<div class="pace-section">
+  const ytdRevBudget=sum(bRevArr.slice(0,n));
+  const ytdRevActual=sum(aRevArr.slice(0,n));
+  const ytdRevVarP=ytdRevActual-ytdRevBudget;
+  const ytdRevPctP=ytdRevBudget!==0?(ytdRevVarP/Math.abs(ytdRevBudget))*100:0;
+
+  const ytdOCFBudgetP=sum(bOCFArr.slice(0,n));
+  const ytdOCFActualP=sum(aOCFArr.slice(0,n));
+  const ytdOCFVarP=ytdOCFActualP-ytdOCFBudgetP;
+  const ytdOCFPctP=ytdOCFBudgetP!==0?(ytdOCFVarP/Math.abs(ytdOCFBudgetP))*100:0;
+
+  // Status badges (one for each view)
+  const oiAheadM=curOIActual>=curOIBudget;
+  const revAheadM=curRevActual>=curRevBudget;
+  const ocfAheadM=curOCFActual>=curOCFBudget;
+  const overallOnPaceM=oiAheadM&&revAheadM&&ocfAheadM;
+
+  const oiAheadY=ytdOIActual>=ytdOIBudget;
+  const revAheadY=ytdRevActual>=ytdRevBudget;
+  const ocfAheadY=ytdOCFActualP>=ytdOCFBudgetP;
+  const overallOnPaceY=oiAheadY&&revAheadY&&ocfAheadY;
+
+  H+=`<div class="pace-section view-month" id="perfSection">
     <div class="pace-hd">
-      <span>Current Month Performance — ${curMonth} 2026</span>
-      <span class="pace-status ${overallOnPace?'ahead':'behind'}">${overallOnPace?'✅ Goal Exceeded!':'⚠️ Behind Pace!'}</span>
+      <span>Calfrac US Division Financial Performance</span>
+      <div class="perf-controls">
+        <div class="perf-toggle">
+          <button class="perf-btn active" onclick="setPerfView('month',this)">Current Month</button>
+          <button class="perf-btn" onclick="setPerfView('ytd',this)">YTD</button>
+        </div>
+        <span class="pace-status perf-month-only ${overallOnPaceM?'ahead':'behind'}">${overallOnPaceM?'✅ Goal Exceeded!':'⚠️ Behind Pace!'}</span>
+        <span class="pace-status perf-ytd-only ${overallOnPaceY?'ahead':'behind'}">${overallOnPaceY?'✅ Goal Exceeded!':'⚠️ Behind Pace!'}</span>
+      </div>
     </div>
     <div class="perf-grid">
+      <!-- Operating Income Card -->
       <div class="perf-card">
-        <div class="pc-title">Operating Income</div>
-        <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(curOIBudget)}</span></div>
-        <div class="perf-row"><span class="pr-label">Actual</span><span class="pr-val ${oiAhead?'grn':'red'}">${fmt(curOIActual)}</span></div>
-        <div class="perf-variance">
-          <span class="pv-label">Variance</span>
-          <span>
-            <span class="pv-val ${curOIVar>=0?'grn':'red'}">${fmtVar(curOIVar)}</span>
-            <span class="pv-pct ${curOIVar>=0?'grn':'red'}">(${curOIPct>=0?'+':''}${curOIPct.toFixed(1)}%)</span>
-          </span>
+        <div class="pc-title"><span>Operating Income</span> <span style="float:right;font-weight:500;text-transform:none;font-size:11px;color:#888"><span class="perf-month-only">${curMonth} 2026</span><span class="perf-ytd-only">YTD (${D.months[0]} – ${curMonth})</span></span></div>
+        <!-- Month View -->
+        <div class="perf-month-only">
+          <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(curOIBudget)}</span></div>
+          <div class="perf-row" style="margin-top:12px"><span class="pr-label">Actual</span><span class="pr-val ${oiAheadM?'grn':'red'}">${fmt(curOIActual)}</span></div>
+          <div class="perf-variance">
+            <span class="pv-label">Variance</span>
+            <span>
+              <span class="pv-val ${curOIVar>=0?'grn':'red'}">${fmtVar(curOIVar)}</span>
+              <span class="pv-pct ${curOIVar>=0?'grn':'red'}">(${curOIPct>=0?'+':''}${curOIPct.toFixed(1)}%)</span>
+            </span>
+          </div>
+        </div>
+        <!-- YTD View -->
+        <div class="perf-ytd-only">
+          <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(ytdOIBudget)}</span></div>
+          <div class="perf-row" style="margin-top:12px"><span class="pr-label">Actual</span><span class="pr-val ${oiAheadY?'grn':'red'}">${fmt(ytdOIActual)}</span></div>
+          <div class="perf-variance">
+            <span class="pv-label">Variance</span>
+            <span>
+              <span class="pv-val ${ytdOIVarP>=0?'grn':'red'}">${fmtVar(ytdOIVarP)}</span>
+              <span class="pv-pct ${ytdOIVarP>=0?'grn':'red'}">(${ytdOIPctP>=0?'+':''}${ytdOIPctP.toFixed(1)}%)</span>
+            </span>
+          </div>
         </div>
       </div>
+      <!-- Revenue Card -->
       <div class="perf-card">
-        <div class="pc-title">Revenue</div>
-        <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(curRevBudget)}</span></div>
-        <div class="perf-row"><span class="pr-label">Actual</span><span class="pr-val ${revAhead?'grn':'red'}">${fmt(curRevActual)}</span></div>
-        <div class="perf-variance">
-          <span class="pv-label">Variance</span>
-          <span>
-            <span class="pv-val ${curRevVar>=0?'grn':'red'}">${fmtVar(curRevVar)}</span>
-            <span class="pv-pct ${curRevVar>=0?'grn':'red'}">(${curRevPct>=0?'+':''}${curRevPct.toFixed(1)}%)</span>
-          </span>
+        <div class="pc-title"><span>Revenue</span> <span style="float:right;font-weight:500;text-transform:none;font-size:11px;color:#888"><span class="perf-month-only">${curMonth} 2026</span><span class="perf-ytd-only">YTD (${D.months[0]} – ${curMonth})</span></span></div>
+        <div class="perf-month-only">
+          <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(curRevBudget)}</span></div>
+          <div class="perf-row" style="margin-top:12px"><span class="pr-label">Actual</span><span class="pr-val ${revAheadM?'grn':'red'}">${fmt(curRevActual)}</span></div>
+          <div class="perf-variance">
+            <span class="pv-label">Variance</span>
+            <span>
+              <span class="pv-val ${curRevVar>=0?'grn':'red'}">${fmtVar(curRevVar)}</span>
+              <span class="pv-pct ${curRevVar>=0?'grn':'red'}">(${curRevPct>=0?'+':''}${curRevPct.toFixed(1)}%)</span>
+            </span>
+          </div>
+        </div>
+        <div class="perf-ytd-only">
+          <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(ytdRevBudget)}</span></div>
+          <div class="perf-row" style="margin-top:12px"><span class="pr-label">Actual</span><span class="pr-val ${revAheadY?'grn':'red'}">${fmt(ytdRevActual)}</span></div>
+          <div class="perf-variance">
+            <span class="pv-label">Variance</span>
+            <span>
+              <span class="pv-val ${ytdRevVarP>=0?'grn':'red'}">${fmtVar(ytdRevVarP)}</span>
+              <span class="pv-pct ${ytdRevVarP>=0?'grn':'red'}">(${ytdRevPctP>=0?'+':''}${ytdRevPctP.toFixed(1)}%)</span>
+            </span>
+          </div>
         </div>
       </div>
+      <!-- OCF Card -->
       <div class="perf-card">
-        <div class="pc-title">Operating Cash Flow</div>
-        <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(curOCFBudget)}</span></div>
-        <div class="perf-row"><span class="pr-label">Actual</span><span class="pr-val ${ocfAhead?'grn':'red'}">${fmt(curOCFActual)}</span></div>
-        <div class="perf-variance">
-          <span class="pv-label">Variance</span>
-          <span>
-            <span class="pv-val ${curOCFVar>=0?'grn':'red'}">${fmtVar(curOCFVar)}</span>
-            <span class="pv-pct ${curOCFVar>=0?'grn':'red'}">(${curOCFPct>=0?'+':''}${curOCFPct.toFixed(1)}%)</span>
-          </span>
+        <div class="pc-title"><span>Operating Cash Flow</span> <span style="float:right;font-weight:500;text-transform:none;font-size:11px;color:#888"><span class="perf-month-only">${curMonth} 2026</span><span class="perf-ytd-only">YTD (${D.months[0]} – ${curMonth})</span></span></div>
+        <div class="perf-month-only">
+          <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(curOCFBudget)}</span></div>
+          <div class="perf-row" style="margin-top:12px"><span class="pr-label">Actual</span><span class="pr-val ${ocfAheadM?'grn':'red'}">${fmt(curOCFActual)}</span></div>
+          <div class="perf-variance">
+            <span class="pv-label">Variance</span>
+            <span>
+              <span class="pv-val ${curOCFVar>=0?'grn':'red'}">${fmtVar(curOCFVar)}</span>
+              <span class="pv-pct ${curOCFVar>=0?'grn':'red'}">(${curOCFPct>=0?'+':''}${curOCFPct.toFixed(1)}%)</span>
+            </span>
+          </div>
+        </div>
+        <div class="perf-ytd-only">
+          <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(ytdOCFBudgetP)}</span></div>
+          <div class="perf-row" style="margin-top:12px"><span class="pr-label">Actual</span><span class="pr-val ${ocfAheadY?'grn':'red'}">${fmt(ytdOCFActualP)}</span></div>
+          <div class="perf-variance">
+            <span class="pv-label">Variance</span>
+            <span>
+              <span class="pv-val ${ytdOCFVarP>=0?'grn':'red'}">${fmtVar(ytdOCFVarP)}</span>
+              <span class="pv-pct ${ytdOCFVarP>=0?'grn':'red'}">(${ytdOCFPctP>=0?'+':''}${ytdOCFPctP.toFixed(1)}%)</span>
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -481,21 +646,42 @@ function renderDashboard(){
   const bRev=D.bgtLines["Revenue"]||[],bGM=D.bgtLines["Gross Margin"]||[];
   const opDist=D.districts.filter(d=>d.bgtGM!=null);
 
-  // Build snapshot HTML separately to append after visuals
-  let snapHtml = `<div class="snapshot" style="margin-top:28px"><div class="snapshot-hd">District Performance Snapshot</div><table>
+  // Snapshot built separately, appended after visuals
+  let snapHtml = `<div class="snapshot view-all" id="snapshotTbl" style="margin-top:28px"><div class="snapshot-hd" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px"><span>District Performance Snapshot</span><div class="snap-toggle"><button class="snap-btn active" onclick="setSnapView('all',this)">All</button><button class="snap-btn" onclick="setSnapView('rev',this)">Revenue</button><button class="snap-btn" onclick="setSnapView('gm',this)">Gross Margin</button><button class="snap-btn" onclick="setSnapView('oi',this)">Operating Income</button><button class="snap-btn" onclick="setSnapView('ocf',this)">OCF</button></div></div><div class="snap-scroll"><table>
     <thead>
       <tr>
         <th rowspan="2" style="vertical-align:middle;border-right:2px solid #ddd;font-weight:600;font-size:13px;color:#006F53">District</th>
         <td colspan="4" class="col-group" style="border-right:2px solid #ddd">${curMonth} 2026 — Revenue Performance</td>
-        <td colspan="3" class="col-group" style="border-right:2px solid #ddd">FY-2026 Revenue Progress</td>
-        <td colspan="3" class="col-group">FY-2026 Gross Margin Progress</td>
+        <td colspan="3" class="col-group col-rev" style="border-right:2px solid #ddd">FY-2026 Revenue Progress</td>
+        <td colspan="3" class="col-group col-gm" style="border-right:2px solid #ddd">FY-2026 Gross Margin Progress</td>
+        <td colspan="3" class="col-group col-oi" style="border-right:2px solid #ddd">FY-2026 Operating Income Progress</td>
+        <td colspan="3" class="col-group col-ocf">FY-2026 Operating Cash Flow Progress</td>
       </tr>
       <tr>
         <th>Budget</th><th>Actual</th><th>Variance $</th><th style="border-right:2px solid #ddd">Variance %</th>
-        <th>YTD Budget</th><th>YTD Actual</th><th style="border-right:2px solid #ddd">Progress</th>
-        <th>YTD Budget</th><th>YTD Actual</th><th>Progress</th>
+        <th class="col-rev">YTD Budget</th><th class="col-rev">YTD Actual</th><th class="col-rev" style="border-right:2px solid #ddd">Progress</th>
+        <th class="col-gm">YTD Budget</th><th class="col-gm">YTD Actual</th><th class="col-gm" style="border-right:2px solid #ddd">Progress</th>
+        <th class="col-oi">YTD Budget</th><th class="col-oi">YTD Actual</th><th class="col-oi" style="border-right:2px solid #ddd">Progress</th>
+        <th class="col-ocf">YTD Budget</th><th class="col-ocf">YTD Actual</th><th class="col-ocf">Progress</th>
       </tr>
     </thead><tbody>`;
+
+  // YTD US Operating Income & OCF (totals)
+  const usYtdOIAct=sum((D.actLines["Operating Income"]||[]).slice(0,n));
+  const usYtdOIBgt=sum((D.bgtLines["Operating Income"]||[]).slice(0,n));
+  const usPctOI=usYtdOIBgt!==0?usYtdOIAct/usYtdOIBgt:0;
+  const usOnTrackOI=usYtdOIAct>=usYtdOIBgt;
+  const usYtdOCFAct=sum((D.actLines["Total OCF"]||[]).slice(0,n));
+  const usYtdOCFBgt=sum((D.bgtLines["Total OCF"]||[]).slice(0,n));
+  const usPctOCF=usYtdOCFBgt!==0?usYtdOCFAct/usYtdOCFBgt:0;
+  const usOnTrackOCF=usYtdOCFAct>=usYtdOCFBgt;
+  
+  // Pre-compute total district YTD GM (used to proportionally allocate OI & OCF per district)
+  let totalDistGMAct=0, totalDistGMBgt=0;
+  opDist.forEach(d=>{
+    totalDistGMAct += sum((d.actGM||[]).slice(0,n));
+    totalDistGMBgt += sum((d.bgtGM||[]).slice(0,n));
+  });
 
   opDist.forEach(d=>{
     const bRevCur=(d.bgtRev||[])[ci]||0;
@@ -504,17 +690,27 @@ function renderDashboard(){
     const vRevPctCur=bRevCur!==0?(vRevCur/Math.abs(bRevCur))*100:0;
     const varClsRev=vRevCur>0?"fav":vRevCur<0?"unfav":"";
 
-    // YTD Revenue Progress
-    const ytdRevAct=sum((d.actRev||[]).slice(0,n));
-    const ytdRevBgt=sum((d.bgtRev||[]).slice(0,n));
-    const pctRev=ytdRevBgt!==0?ytdRevAct/ytdRevBgt:0;
-    const onTrackRev=ytdRevAct>=ytdRevBgt;
+    const ytdRevActD=sum((d.actRev||[]).slice(0,n));
+    const ytdRevBgtD=sum((d.bgtRev||[]).slice(0,n));
+    const pctRevD=ytdRevBgtD!==0?ytdRevActD/ytdRevBgtD:0;
+    const onTrackRevD=ytdRevActD>=ytdRevBgtD;
 
-    // YTD GM Progress
     const ytdGMd=sum((d.actGM||[]).slice(0,n));
     const ytdBgtGMd=sum((d.bgtGM||[]).slice(0,n));
-    const pct=ytdBgtGMd!==0?ytdGMd/ytdBgtGMd:0;
-    const onTrack=ytdGMd>=ytdBgtGMd;
+    const pctGMd=ytdBgtGMd!==0?ytdGMd/ytdBgtGMd:0;
+    const onTrackGMd=ytdGMd>=ytdBgtGMd;
+
+    // Allocate US OI/OCF proportionally based on district GM share
+    const shareAct=totalDistGMAct!==0?ytdGMd/totalDistGMAct:0;
+    const shareBgt=totalDistGMBgt!==0?ytdBgtGMd/totalDistGMBgt:0;
+    const distOIAct=shareAct*usYtdOIAct;
+    const distOIBgt=shareBgt*usYtdOIBgt;
+    const pctOI=distOIBgt!==0?distOIAct/distOIBgt:0;
+    const onTrackOI=distOIAct>=distOIBgt;
+    const distOCFAct=shareAct*usYtdOCFAct;
+    const distOCFBgt=shareBgt*usYtdOCFBgt;
+    const pctOCF=distOCFBgt!==0?distOCFAct/distOCFBgt:0;
+    const onTrackOCF=distOCFAct>=distOCFBgt;
 
     snapHtml+=`<tr>
       <td style="border-right:2px solid #f0f0f0">${d.name}</td>
@@ -522,40 +718,52 @@ function renderDashboard(){
       <td>${fmt(aRevCur)}</td>
       <td class="${varClsRev}">${fmtVar(vRevCur)}</td>
       <td class="${varClsRev}" style="border-right:2px solid #f0f0f0">${fmtPct(vRevPctCur/100)}</td>
-      <td>${fmt(ytdRevBgt)}</td>
-      <td>${fmt(ytdRevAct)}</td>
-      <td style="border-right:2px solid #f0f0f0"><div class="progress-bar-bg"><div class="progress-bar-fill ${onTrackRev?'on-track':'behind'}" style="width:${Math.min(Math.max(pctRev*100,0),100).toFixed(0)}%">${(pctRev*100).toFixed(1)}%</div></div></td>
-      <td>${fmt(ytdBgtGMd)}</td>
-      <td>${fmt(ytdGMd)}</td>
-      <td><div class="progress-bar-bg"><div class="progress-bar-fill ${onTrack?'on-track':'behind'}" style="width:${Math.min(Math.max(pct*100,0),100).toFixed(0)}%">${(pct*100).toFixed(1)}%</div></div></td>
+      <td class="col-rev">${fmt(ytdRevBgtD)}</td>
+      <td class="col-rev">${fmt(ytdRevActD)}</td>
+      <td class="col-rev" style="border-right:2px solid #f0f0f0"><div class="progress-bar-bg"><div class="progress-bar-fill ${onTrackRevD?'on-track':'behind'}" style="width:${Math.min(Math.max(pctRevD*100,0),100).toFixed(0)}%">${(pctRevD*100).toFixed(1)}%</div></div></td>
+      <td class="col-gm">${fmt(ytdBgtGMd)}</td>
+      <td class="col-gm">${fmt(ytdGMd)}</td>
+      <td class="col-gm" style="border-right:2px solid #f0f0f0"><div class="progress-bar-bg"><div class="progress-bar-fill ${onTrackGMd?'on-track':'behind'}" style="width:${Math.min(Math.max(pctGMd*100,0),100).toFixed(0)}%">${(pctGMd*100).toFixed(1)}%</div></div></td>
+      <td class="col-oi">${fmt(distOIBgt)}</td>
+      <td class="col-oi">${fmt(distOIAct)}</td>
+      <td class="col-oi" style="border-right:2px solid #f0f0f0"><div class="progress-bar-bg"><div class="progress-bar-fill ${onTrackOI?'on-track':'behind'}" style="width:${Math.min(Math.max(pctOI*100,0),100).toFixed(0)}%">${(pctOI*100).toFixed(1)}%</div></div></td>
+      <td class="col-ocf">${fmt(distOCFBgt)}</td>
+      <td class="col-ocf">${fmt(distOCFAct)}</td>
+      <td class="col-ocf"><div class="progress-bar-bg"><div class="progress-bar-fill ${onTrackOCF?'on-track':'behind'}" style="width:${Math.min(Math.max(pctOCF*100,0),100).toFixed(0)}%">${(pctOCF*100).toFixed(1)}%</div></div></td>
     </tr>`;
   });
 
   const usBRevCur=bRev[ci]||0,usARevCur=aRev[ci]||0,usVRevCur=usARevCur-usBRevCur;
   const usVPctCur=usBRevCur!==0?(usVRevCur/Math.abs(usBRevCur))*100:0;
   const usVClsCur=usVRevCur>0?"fav":usVRevCur<0?"unfav":"";
-  const usYtdGMv=sum(aGM.slice(0,n));
-  const usYtdBgtGMv=sum(bGM.slice(0,n));
-  const usPctv=usYtdBgtGMv!==0?usYtdGMv/usYtdBgtGMv:0;
-  const usOnTrackv=usYtdGMv>=usYtdBgtGMv;
   const usYtdRevAct=sum(aRev.slice(0,n));
   const usYtdRevBgt=sum(bRev.slice(0,n));
   const usPctRev=usYtdRevBgt!==0?usYtdRevAct/usYtdRevBgt:0;
   const usOnTrackRev=usYtdRevAct>=usYtdRevBgt;
+  const usYtdGMv=sum(aGM.slice(0,n));
+  const usYtdBgtGMv=sum(bGM.slice(0,n));
+  const usPctv=usYtdBgtGMv!==0?usYtdGMv/usYtdBgtGMv:0;
+  const usOnTrackv=usYtdGMv>=usYtdBgtGMv;
   snapHtml+=`<tr class="total">
     <td style="border-right:2px solid #ddd">US Total</td>
     <td>${fmt(usBRevCur)}</td>
     <td>${fmt(usARevCur)}</td>
     <td class="${usVClsCur}">${fmtVar(usVRevCur)}</td>
     <td class="${usVClsCur}" style="border-right:2px solid #ddd">${fmtPct(usVPctCur/100)}</td>
-    <td>${fmt(usYtdRevBgt)}</td>
-    <td>${fmt(usYtdRevAct)}</td>
-    <td style="border-right:2px solid #ddd"><div class="progress-bar-bg"><div class="progress-bar-fill ${usOnTrackRev?'on-track':'behind'}" style="width:${Math.min(Math.max(usPctRev*100,0),100).toFixed(0)}%">${(usPctRev*100).toFixed(1)}%</div></div></td>
-    <td>${fmt(usYtdBgtGMv)}</td>
-    <td>${fmt(usYtdGMv)}</td>
-    <td><div class="progress-bar-bg"><div class="progress-bar-fill ${usOnTrackv?'on-track':'behind'}" style="width:${Math.min(Math.max(usPctv*100,0),100).toFixed(0)}%">${(usPctv*100).toFixed(1)}%</div></div></td>
+    <td class="col-rev">${fmt(usYtdRevBgt)}</td>
+    <td class="col-rev">${fmt(usYtdRevAct)}</td>
+    <td class="col-rev" style="border-right:2px solid #ddd"><div class="progress-bar-bg"><div class="progress-bar-fill ${usOnTrackRev?'on-track':'behind'}" style="width:${Math.min(Math.max(usPctRev*100,0),100).toFixed(0)}%">${(usPctRev*100).toFixed(1)}%</div></div></td>
+    <td class="col-gm">${fmt(usYtdBgtGMv)}</td>
+    <td class="col-gm">${fmt(usYtdGMv)}</td>
+    <td class="col-gm" style="border-right:2px solid #ddd"><div class="progress-bar-bg"><div class="progress-bar-fill ${usOnTrackv?'on-track':'behind'}" style="width:${Math.min(Math.max(usPctv*100,0),100).toFixed(0)}%">${(usPctv*100).toFixed(1)}%</div></div></td>
+    <td class="col-oi">${fmt(usYtdOIBgt)}</td>
+    <td class="col-oi">${fmt(usYtdOIAct)}</td>
+    <td class="col-oi" style="border-right:2px solid #ddd"><div class="progress-bar-bg"><div class="progress-bar-fill ${usOnTrackOI?'on-track':'behind'}" style="width:${Math.min(Math.max(usPctOI*100,0),100).toFixed(0)}%">${(usPctOI*100).toFixed(1)}%</div></div></td>
+    <td class="col-ocf">${fmt(usYtdOCFBgt)}</td>
+    <td class="col-ocf">${fmt(usYtdOCFAct)}</td>
+    <td class="col-ocf"><div class="progress-bar-bg"><div class="progress-bar-fill ${usOnTrackOCF?'on-track':'behind'}" style="width:${Math.min(Math.max(usPctOCF*100,0),100).toFixed(0)}%">${(usPctOCF*100).toFixed(1)}%</div></div></td>
   </tr>`;
-  snapHtml+=`</tbody></table></div>`;
+  snapHtml+=`</tbody></table><div style="padding:10px 16px;font-size:11px;color:#999;font-style:italic;background:#fafbfc;border-top:1px solid #eee">Note: District-level Operating Income and Operating Cash Flow are estimated by proportionally allocating the US totals based on each district\u2019s share of YTD Gross Margin contribution.</div></div></div>`;
 
   H+=`<div class="viz-section-hd">Budget vs Actual: Monthly Gross Margin by District
     <div class="legend"><span><span class="dot" style="background:#b0bec5"></span>Budget</span><span><span class="dot" style="background:#27ae60"></span>Actual \u2265 Budget</span><span><span class="dot" style="background:#e74c3c"></span>Actual &lt; Budget</span><span style="color:#90a4ae;font-weight:700">| Zero Axis</span></div>
@@ -652,6 +860,27 @@ function renderPnL(){
     if(["Field Costs","District Overhead","SG&A","Operating Income"].includes(l)){
       const sp=document.createElement("tr");sp.classList.add("spacer");sp.innerHTML="<td colspan='5'></td>";tb.appendChild(sp);}
   });
+}
+
+
+function setSnapView(view, btn){
+  const snap = document.getElementById("snapshotTbl");
+  if(!snap) return;
+  snap.classList.remove("view-rev","view-gm","view-oi","view-ocf","view-all");
+  snap.classList.add("view-"+view);
+  const btns = btn.parentElement.querySelectorAll(".snap-btn");
+  btns.forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+}
+
+function setPerfView(view, btn){
+  const sec = document.getElementById("perfSection");
+  if(!sec) return;
+  sec.classList.remove("view-month","view-ytd");
+  sec.classList.add("view-"+view);
+  const btns = btn.parentElement.querySelectorAll(".perf-btn");
+  btns.forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
 }
 
 window.addEventListener("DOMContentLoaded",loadCurrentData);
