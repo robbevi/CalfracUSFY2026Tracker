@@ -15,7 +15,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 .hdr .sub{font-size:14px;color:#888;margin-top:2px}
 .wrap{max-width:1400px;margin:22px auto;padding:0 18px}
 
-.cards{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-bottom:24px}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-bottom:24px}
 .card{background:#fff;border-radius:10px;padding:22px 22px;box-shadow:0 2px 8px rgba(0,0,0,.07);transition:transform .12s;text-align:center;display:flex;flex-direction:column;justify-content:space-between;gap:8px}
 .card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.12)}
 .card .lbl{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:#888;font-weight:600;min-height:2.8em;display:flex;align-items:center;justify-content:center;line-height:1.3}
@@ -23,6 +23,21 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 .card .sm{font-size:11.5px;margin-top:5px;color:#999;min-height:2.6em;display:flex;align-items:center;justify-content:center;line-height:1.3}
 .grn{color:#1a8a3f!important}.red{color:#c0392b!important}
 
+
+.perf-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;padding:18px 22px}
+.perf-card{background:#f8faf8;border:1px solid #e0e8e3;border-radius:10px;padding:18px 22px;display:flex;flex-direction:column;gap:12px}
+.perf-card .pc-title{font-size:13px;font-weight:700;color:#006F53;text-transform:uppercase;letter-spacing:.6px;padding-bottom:8px;border-bottom:1px solid #d6e6da}
+.perf-row{display:flex;justify-content:space-between;align-items:baseline;font-size:13px}
+.perf-row .pr-label{color:#888;text-transform:uppercase;letter-spacing:.5px;font-size:11px;font-weight:700}
+.perf-row .pr-val{font-size:22px;font-weight:700;color:#333}
+.perf-row .pr-val.grn{color:#1a8a3f}.perf-row .pr-val.red{color:#c0392b}
+.perf-variance{margin-top:8px;padding-top:10px;border-top:1px dashed #c5d8c9;display:flex;justify-content:space-between;align-items:baseline}
+.perf-variance .pv-label{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:#888;font-weight:700}
+.perf-variance .pv-val{font-size:18px;font-weight:800}
+.perf-variance .pv-val.grn{color:#1a8a3f}.perf-variance .pv-val.red{color:#c0392b}
+.perf-variance .pv-pct{font-size:13px;font-weight:700;margin-left:8px;opacity:.85}
+@media(max-width:1100px){.perf-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:700px){.perf-grid{grid-template-columns:1fr}}
 .pace-section{background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.07);overflow:hidden;margin-bottom:28px}
 .pace-hd{background:#006F53;color:#fff;padding:14px 20px;font-size:16px;font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;letter-spacing:.3px}
 .pace-hd .pace-status{font-size:14px;padding:8px 22px;border-radius:22px;font-weight:900;letter-spacing:1px;text-transform:uppercase;box-shadow:0 2px 5px rgba(0,0,0,.12);border:2px solid}
@@ -121,7 +136,7 @@ body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#eef1f5;
 select{padding:7px 12px;border:1px solid #ccc;border-radius:6px;font-size:13px;background:#fff;color:#333;cursor:pointer;outline:none}
 select:focus{border-color:#006F53}
 table.pnl{width:100%;border-collapse:collapse}
-table.pnl thead th{background:#006F53;color:#fff;padding:10px 14px;text-align:right;font-size:12px;font-weight:600;letter-spacing:.3px}
+table.pnl thead th{background:#006F53;color:#fff;padding:13px 16px;text-align:right;font-size:14px;font-weight:700;letter-spacing:.4px}
 table.pnl thead th:first-child{text-align:left}
 table.pnl tbody td{padding:9px 14px;text-align:right;font-size:12.5px;border-bottom:1px solid #f0f0f0}
 table.pnl tbody td:first-child{text-align:left;font-weight:500;color:#444}
@@ -199,9 +214,30 @@ table.pnl tbody tr:hover{background:#f7f9fc}
 let uploadedFiles={actuals:null,budget:null};
 let DATA=null;
 
+// ====== PASSWORD PROTECTION ======
+// To change the password, edit the value below:
+const UPLOAD_PASSWORD = "Calfrac2026";
+let isAuthenticated = false;
+
 function toggleUpload(){
-  document.getElementById("uploadBody").classList.toggle("hidden");
-  document.getElementById("uploadToggle").classList.toggle("collapsed");
+  const body = document.getElementById("uploadBody");
+  const toggle = document.getElementById("uploadToggle");
+  if(!body.classList.contains("hidden")){
+    body.classList.add("hidden");
+    toggle.classList.add("collapsed");
+    return;
+  }
+  if(!isAuthenticated){
+    const entered = prompt("Enter password to access data upload:");
+    if(entered === null) return;
+    if(entered !== UPLOAD_PASSWORD){
+      alert("Incorrect password. Access denied.");
+      return;
+    }
+    isAuthenticated = true;
+  }
+  body.classList.remove("hidden");
+  toggle.classList.remove("collapsed");
 }
 function handleFile(e,type){
   const f=e.target.files[0];if(!f)return;
@@ -354,56 +390,89 @@ function renderDashboard(){
   const daysRemaining=Math.max(totalDays-daysPassed,0);
   const pctThrough=(daysPassed/totalDays*100).toFixed(1);
 
+  const ytdOCFActual=sum((D.actLines["Total OCF"]||[]).slice(0,n));
+  const ytdOCFBudget=sum((D.bgtLines["Total OCF"]||[]).slice(0,n));
+  const ytdOCFVar=ytdOCFActual-ytdOCFBudget;
+  const ytdOCFPct=ytdOCFBudget!==0?(ytdOCFVar/Math.abs(ytdOCFBudget))*100:0;
+  // YTD OI variance (for subtitle on YTD OI card)
+  const ytdOIVar=ytdA-ytdB;
+
   let H="";
 
   H+=`<div class="cards">
     <div class="card"><div class="lbl">FY-2026 OI Budget</div><div class="val">${fmt(D.fyBudgetOI)}</div><div class="sm">Full-Year Target</div></div>
     <div class="card"><div class="lbl">YTD US Operating Income</div><div class="val ${ytdA>=0?'grn':'red'}">${fmt(ytdA)}</div><div class="sm">${D.months[0]} \u2013 ${curMonth} 2026 (${n} months)</div></div>
-    <div class="card"><div class="lbl">Goal vs Actual</div><div class="val ${variance>=0?'grn':'red'}">${fmt(variance)}</div><div class="sm">${variance>=0?'Favorable':'Unfavorable'} vs YTD Budget (${fmt(ytdB)})</div></div>
-    <div class="card"><div class="lbl">YTD Progress to FY Goal</div><div class="val ${progress>=expected?'grn':'red'}">${(progress*100).toFixed(1)}%</div><div class="sm">${(expected*100).toFixed(1)}% expected at ${n} of 12 months</div></div>
+    <div class="card"><div class="lbl">YTD Operating Cash Flow</div><div class="val ${ytdOCFActual>=0?'grn':'red'}">${fmt(ytdOCFActual)}</div><div class="sm ${ytdOCFVar>=0?'grn':'red'}">${ytdOCFVar>=0?'+':''}${ytdOCFPct.toFixed(1)}% vs Budget (${fmt(ytdOCFBudget)})</div></div>
     <div class="card"><div class="lbl">Current Month Budget (OI)</div><div class="val">${fmt(bOI[ci])}</div><div class="sm">${curMonth}-2026</div></div>
     <div class="card"><div class="lbl">FY-2026 Calendar</div><div class="val">${daysRemaining} Days Left</div><div class="sm">${pctThrough}% through FY 2026</div></div>
   </div>`;
 
-  const fyBudget=D.fyBudgetOI||1;
-  const actualPct=(ytdA/fyBudget)*100;
-  const expectedPct=(n/12)*100;
-  const onPace=actualPct>=expectedPct;
-  const remainingBudget=fyBudget-ytdA;
-  const monthsRemaining=12-n;
-  const avgMonthlyRequired=monthsRemaining>0?remainingBudget/monthsRemaining:0;
-  const ytdAvgMonthly=ytdA/n;
-  const catchUpAmount=(expectedPct-actualPct)/100*fyBudget;
-  const runRateForecast=ytdAvgMonthly*12;
-  const accelerationPct=ytdAvgMonthly!==0?((avgMonthlyRequired-ytdAvgMonthly)/Math.abs(ytdAvgMonthly))*100:0;
-  const forecastVsBudget=runRateForecast-fyBudget;
+  // CURRENT MONTH PERFORMANCE
+  const curOIBudget=bOI[ci]||0;
+  const curOIActual=aOI[ci]||0;
+  const curOIVar=curOIActual-curOIBudget;
+  const curOIPct=curOIBudget!==0?(curOIVar/Math.abs(curOIBudget))*100:0;
 
-  const fillPct=Math.min(Math.max(actualPct,0),100);
-  const markerPct=Math.min(Math.max(expectedPct,0),100);
+  const aRevArr=D.actLines["Revenue"]||[];
+  const bRevArr=D.bgtLines["Revenue"]||[];
+  const curRevBudget=bRevArr[ci]||0;
+  const curRevActual=aRevArr[ci]||0;
+  const curRevVar=curRevActual-curRevBudget;
+  const curRevPct=curRevBudget!==0?(curRevVar/Math.abs(curRevBudget))*100:0;
+
+  const aOCFArr=D.actLines["Total OCF"]||[];
+  const bOCFArr=D.bgtLines["Total OCF"]||[];
+  const curOCFBudget=bOCFArr[ci]||0;
+  const curOCFActual=aOCFArr[ci]||0;
+  const curOCFVar=curOCFActual-curOCFBudget;
+  const curOCFPct=curOCFBudget!==0?(curOCFVar/Math.abs(curOCFBudget))*100:0;
+
+  const oiAhead=curOIActual>=curOIBudget;
+  const revAhead=curRevActual>=curRevBudget;
+  const ocfAhead=curOCFActual>=curOCFBudget;
+  const overallOnPace=oiAhead&&revAhead&&ocfAhead;
 
   H+=`<div class="pace-section">
     <div class="pace-hd">
-      <span>FY-2026 Pace Tracker \u2014 US Operating Income</span>
-      <span class="pace-status ${onPace?'ahead':'behind'}">${onPace?'\u2705 On Pace!':'\u26a0\ufe0f Behind Pace!'}</span>
+      <span>Current Month Performance — ${curMonth} 2026</span>
+      <span class="pace-status ${overallOnPace?'ahead':'behind'}">${overallOnPace?'✅ Goal Exceeded!':'⚠️ Behind Pace!'}</span>
     </div>
-    <div class="pace-body">
-      <div class="pace-bar-wrap">
-        <div class="pace-target">FY Target: <strong>${fmt(fyBudget)}</strong></div>
-        <div class="pace-bar-bg">
-          <div class="pace-bar-fill ${onPace?'on-pace':'off-pace'}" style="width:${fillPct}%">
-            ${actualPct.toFixed(1)}% of FY Budget Achieved
-          </div>
-          <div class="pace-marker" style="left:${markerPct}%" data-label="Expected: ${expectedPct.toFixed(1)}%"></div>
+    <div class="perf-grid">
+      <div class="perf-card">
+        <div class="pc-title">Operating Income</div>
+        <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(curOIBudget)}</span></div>
+        <div class="perf-row"><span class="pr-label">Actual</span><span class="pr-val ${oiAhead?'grn':'red'}">${fmt(curOIActual)}</span></div>
+        <div class="perf-variance">
+          <span class="pv-label">Variance</span>
+          <span>
+            <span class="pv-val ${curOIVar>=0?'grn':'red'}">${fmtVar(curOIVar)}</span>
+            <span class="pv-pct ${curOIVar>=0?'grn':'red'}">(${curOIPct>=0?'+':''}${curOIPct.toFixed(1)}%)</span>
+          </span>
         </div>
-        <div class="pace-ticks"><span>0%</span><span>25%</span><span>50%</span><span>75%</span><span>100%</span></div>
       </div>
-      <div class="pace-metrics">
-        <div class="pace-metric"><div class="pm-lbl">Months Remaining</div><div class="pm-val">${monthsRemaining}</div><div class="pm-sm">of 12 total</div></div>
-        <div class="pace-metric"><div class="pm-lbl">Remaining OI to Earn</div><div class="pm-val">${fmt(remainingBudget)}</div><div class="pm-sm">to hit FY budget</div></div>
-        <div class="pace-metric"><div class="pm-lbl">Avg Monthly OI Required</div><div class="pm-val ${avgMonthlyRequired>ytdAvgMonthly?'red':'grn'}">${fmt(avgMonthlyRequired)}</div><div class="pm-sm">over next ${monthsRemaining} months</div></div>
-        <div class="pace-metric"><div class="pm-lbl">Acceleration Needed</div><div class="pm-val ${accelerationPct>0?'red':'grn'}">${accelerationPct>=0?'+':''}${accelerationPct.toFixed(1)}%</div><div class="pm-sm">vs YTD avg of ${fmt(ytdAvgMonthly)}</div></div>
-        <div class="pace-metric"><div class="pm-lbl">Catch-Up Amount</div><div class="pm-val ${catchUpAmount>0?'red':'grn'}">${catchUpAmount>=0?fmt(catchUpAmount):'\u2014'}</div><div class="pm-sm">${catchUpAmount>0?'gap to expected pace':'ahead of pace'}</div></div>
-        <div class="pace-metric"><div class="pm-lbl">Run-Rate Forecast</div><div class="pm-val ${forecastVsBudget>=0?'grn':'red'}">${fmt(runRateForecast)}</div><div class="pm-sm">${forecastVsBudget>=0?'+':''}${fmt(forecastVsBudget)} vs budget</div></div>
+      <div class="perf-card">
+        <div class="pc-title">Revenue</div>
+        <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(curRevBudget)}</span></div>
+        <div class="perf-row"><span class="pr-label">Actual</span><span class="pr-val ${revAhead?'grn':'red'}">${fmt(curRevActual)}</span></div>
+        <div class="perf-variance">
+          <span class="pv-label">Variance</span>
+          <span>
+            <span class="pv-val ${curRevVar>=0?'grn':'red'}">${fmtVar(curRevVar)}</span>
+            <span class="pv-pct ${curRevVar>=0?'grn':'red'}">(${curRevPct>=0?'+':''}${curRevPct.toFixed(1)}%)</span>
+          </span>
+        </div>
+      </div>
+      <div class="perf-card">
+        <div class="pc-title">Operating Cash Flow</div>
+        <div class="perf-row"><span class="pr-label">Budget</span><span class="pr-val">${fmt(curOCFBudget)}</span></div>
+        <div class="perf-row"><span class="pr-label">Actual</span><span class="pr-val ${ocfAhead?'grn':'red'}">${fmt(curOCFActual)}</span></div>
+        <div class="perf-variance">
+          <span class="pv-label">Variance</span>
+          <span>
+            <span class="pv-val ${curOCFVar>=0?'grn':'red'}">${fmtVar(curOCFVar)}</span>
+            <span class="pv-pct ${curOCFVar>=0?'grn':'red'}">(${curOCFPct>=0?'+':''}${curOCFPct.toFixed(1)}%)</span>
+          </span>
+        </div>
       </div>
     </div>
   </div>`;
@@ -412,44 +481,81 @@ function renderDashboard(){
   const bRev=D.bgtLines["Revenue"]||[],bGM=D.bgtLines["Gross Margin"]||[];
   const opDist=D.districts.filter(d=>d.bgtGM!=null);
 
-  H+=`<div class="snapshot"><div class="snapshot-hd">District Performance Snapshot</div><table>
+  // Build snapshot HTML separately to append after visuals
+  let snapHtml = `<div class="snapshot" style="margin-top:28px"><div class="snapshot-hd">District Performance Snapshot</div><table>
     <thead>
       <tr>
         <th rowspan="2" style="vertical-align:middle;border-right:2px solid #ddd;font-weight:600;font-size:13px;color:#006F53">District</th>
-        <td colspan="2" class="col-group" style="border-right:2px solid #ddd">${curMonth} 2026 \u2014 Actuals</td>
-        <td colspan="2" class="col-group" style="border-right:2px solid #ddd">${curMonth} 2026 \u2014 Budget</td>
+        <td colspan="4" class="col-group" style="border-right:2px solid #ddd">${curMonth} 2026 — Revenue Performance</td>
+        <td colspan="3" class="col-group" style="border-right:2px solid #ddd">FY-2026 Revenue Progress</td>
         <td colspan="3" class="col-group">FY-2026 Gross Margin Progress</td>
       </tr>
       <tr>
-        <th>Revenue</th><th style="border-right:2px solid #ddd">Gross Margin</th>
-        <th>Revenue</th><th style="border-right:2px solid #ddd">Gross Margin</th>
-        <th>YTD Actual</th><th>FY Budget</th><th>Progress</th>
+        <th>Budget</th><th>Actual</th><th>Variance $</th><th style="border-right:2px solid #ddd">Variance %</th>
+        <th>YTD Budget</th><th>YTD Actual</th><th style="border-right:2px solid #ddd">Progress</th>
+        <th>YTD Budget</th><th>YTD Actual</th><th>Progress</th>
       </tr>
     </thead><tbody>`;
 
   opDist.forEach(d=>{
-    const ytdGM=sum((d.actGM||[]).slice(0,n));
-    const fyGM=d.fyGM||0;
-    const pct=fyGM?ytdGM/fyGM:0;
-    const onTrack=ytdGM>=sum((d.bgtGM||[]).slice(0,n));
-    H+=`<tr>
+    const bRevCur=(d.bgtRev||[])[ci]||0;
+    const aRevCur=(d.actRev||[])[ci]||0;
+    const vRevCur=aRevCur-bRevCur;
+    const vRevPctCur=bRevCur!==0?(vRevCur/Math.abs(bRevCur))*100:0;
+    const varClsRev=vRevCur>0?"fav":vRevCur<0?"unfav":"";
+
+    // YTD Revenue Progress
+    const ytdRevAct=sum((d.actRev||[]).slice(0,n));
+    const ytdRevBgt=sum((d.bgtRev||[]).slice(0,n));
+    const pctRev=ytdRevBgt!==0?ytdRevAct/ytdRevBgt:0;
+    const onTrackRev=ytdRevAct>=ytdRevBgt;
+
+    // YTD GM Progress
+    const ytdGMd=sum((d.actGM||[]).slice(0,n));
+    const ytdBgtGMd=sum((d.bgtGM||[]).slice(0,n));
+    const pct=ytdBgtGMd!==0?ytdGMd/ytdBgtGMd:0;
+    const onTrack=ytdGMd>=ytdBgtGMd;
+
+    snapHtml+=`<tr>
       <td style="border-right:2px solid #f0f0f0">${d.name}</td>
-      <td>${fmt((d.actRev||[])[ci])}</td><td style="border-right:2px solid #f0f0f0">${fmt(d.actGM?d.actGM[ci]:null)}</td>
-      <td>${fmt((d.bgtRev||[])[ci])}</td><td style="border-right:2px solid #f0f0f0">${fmt(d.bgtGM?d.bgtGM[ci]:null)}</td>
-      <td>${fmt(ytdGM)}</td><td>${fmt(fyGM)}</td>
+      <td>${fmt(bRevCur)}</td>
+      <td>${fmt(aRevCur)}</td>
+      <td class="${varClsRev}">${fmtVar(vRevCur)}</td>
+      <td class="${varClsRev}" style="border-right:2px solid #f0f0f0">${fmtPct(vRevPctCur/100)}</td>
+      <td>${fmt(ytdRevBgt)}</td>
+      <td>${fmt(ytdRevAct)}</td>
+      <td style="border-right:2px solid #f0f0f0"><div class="progress-bar-bg"><div class="progress-bar-fill ${onTrackRev?'on-track':'behind'}" style="width:${Math.min(Math.max(pctRev*100,0),100).toFixed(0)}%">${(pctRev*100).toFixed(1)}%</div></div></td>
+      <td>${fmt(ytdBgtGMd)}</td>
+      <td>${fmt(ytdGMd)}</td>
       <td><div class="progress-bar-bg"><div class="progress-bar-fill ${onTrack?'on-track':'behind'}" style="width:${Math.min(Math.max(pct*100,0),100).toFixed(0)}%">${(pct*100).toFixed(1)}%</div></div></td>
     </tr>`;
   });
-  const usYtdGM=sum(aGM.slice(0,n));const usFyGM=D.usFyGM||0;const usPct=usFyGM?usYtdGM/usFyGM:0;
-  const usOnTrack=usYtdGM>=sum(bGM.slice(0,n));
-  H+=`<tr class="total">
+
+  const usBRevCur=bRev[ci]||0,usARevCur=aRev[ci]||0,usVRevCur=usARevCur-usBRevCur;
+  const usVPctCur=usBRevCur!==0?(usVRevCur/Math.abs(usBRevCur))*100:0;
+  const usVClsCur=usVRevCur>0?"fav":usVRevCur<0?"unfav":"";
+  const usYtdGMv=sum(aGM.slice(0,n));
+  const usYtdBgtGMv=sum(bGM.slice(0,n));
+  const usPctv=usYtdBgtGMv!==0?usYtdGMv/usYtdBgtGMv:0;
+  const usOnTrackv=usYtdGMv>=usYtdBgtGMv;
+  const usYtdRevAct=sum(aRev.slice(0,n));
+  const usYtdRevBgt=sum(bRev.slice(0,n));
+  const usPctRev=usYtdRevBgt!==0?usYtdRevAct/usYtdRevBgt:0;
+  const usOnTrackRev=usYtdRevAct>=usYtdRevBgt;
+  snapHtml+=`<tr class="total">
     <td style="border-right:2px solid #ddd">US Total</td>
-    <td>${fmt(aRev[ci])}</td><td style="border-right:2px solid #ddd">${fmt(aGM[ci])}</td>
-    <td>${fmt(bRev[ci])}</td><td style="border-right:2px solid #ddd">${fmt(bGM[ci])}</td>
-    <td>${fmt(usYtdGM)}</td><td>${fmt(usFyGM)}</td>
-    <td><div class="progress-bar-bg"><div class="progress-bar-fill ${usOnTrack?'on-track':'behind'}" style="width:${Math.min(Math.max(usPct*100,0),100).toFixed(0)}%">${(usPct*100).toFixed(1)}%</div></div></td>
+    <td>${fmt(usBRevCur)}</td>
+    <td>${fmt(usARevCur)}</td>
+    <td class="${usVClsCur}">${fmtVar(usVRevCur)}</td>
+    <td class="${usVClsCur}" style="border-right:2px solid #ddd">${fmtPct(usVPctCur/100)}</td>
+    <td>${fmt(usYtdRevBgt)}</td>
+    <td>${fmt(usYtdRevAct)}</td>
+    <td style="border-right:2px solid #ddd"><div class="progress-bar-bg"><div class="progress-bar-fill ${usOnTrackRev?'on-track':'behind'}" style="width:${Math.min(Math.max(usPctRev*100,0),100).toFixed(0)}%">${(usPctRev*100).toFixed(1)}%</div></div></td>
+    <td>${fmt(usYtdBgtGMv)}</td>
+    <td>${fmt(usYtdGMv)}</td>
+    <td><div class="progress-bar-bg"><div class="progress-bar-fill ${usOnTrackv?'on-track':'behind'}" style="width:${Math.min(Math.max(usPctv*100,0),100).toFixed(0)}%">${(usPctv*100).toFixed(1)}%</div></div></td>
   </tr>`;
-  H+=`</tbody></table></div>`;
+  snapHtml+=`</tbody></table></div>`;
 
   H+=`<div class="viz-section-hd">Budget vs Actual: Monthly Gross Margin by District
     <div class="legend"><span><span class="dot" style="background:#b0bec5"></span>Budget</span><span><span class="dot" style="background:#27ae60"></span>Actual \u2265 Budget</span><span><span class="dot" style="background:#e74c3c"></span>Actual &lt; Budget</span><span style="color:#90a4ae;font-weight:700">| Zero Axis</span></div>
@@ -510,6 +616,8 @@ function renderDashboard(){
     }
     H+=`</div></div></div>`;
   });
+
+  H += snapHtml;
 
   let opts="";
   D.months.forEach((m,i)=>{opts+=`<option value="${i}" ${i===ci?'selected':''}>${m}-2026</option>`;});
